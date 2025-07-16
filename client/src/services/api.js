@@ -18,7 +18,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(new Error(error.message || 'Request failed'));
   }
 );
 
@@ -29,7 +29,7 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('API Error:', error.response?.data || error.message);
-    return Promise.reject(error);
+    return Promise.reject(new Error(error.response?.data?.message || error.message || 'API request failed'));
   }
 );
 
