@@ -21,7 +21,8 @@ A comprehensive MERN stack application for managing solar on-grid system install
 
 ## 📋 Data Fields
 
-### Installation Records:
+### Installation Records
+
 - Customer Name
 - System Capacity (5kW, 10kW, 20kW, 30kW, 40kW, Other)
 - Inverter Model (Huawei, Solis, Other)
@@ -30,7 +31,8 @@ A comprehensive MERN stack application for managing solar on-grid system install
 - Last Service Date (optional)
 - Notes
 
-### Display Information:
+### Display Information
+
 - Customer Name
 - Location
 - Capacity
@@ -41,6 +43,7 @@ A comprehensive MERN stack application for managing solar on-grid system install
 ## 🔧 Setup Instructions
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - MongoDB (local installation or Atlas account)
 - npm or yarn
@@ -48,12 +51,14 @@ A comprehensive MERN stack application for managing solar on-grid system install
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd solar-service-tracker
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm run install-all
    ```
@@ -61,6 +66,7 @@ A comprehensive MERN stack application for managing solar on-grid system install
 3. **Environment Setup**
    
    Create `.env` file in the server directory:
+
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/solar-tracker
@@ -70,11 +76,13 @@ A comprehensive MERN stack application for managing solar on-grid system install
 4. **Start the application**
    
    **Development mode (both client and server):**
+
    ```bash
    npm run dev
    ```
    
    **Or run separately:**
+
    ```bash
    # Terminal 1 - Backend
    npm run server
@@ -84,8 +92,9 @@ A comprehensive MERN stack application for managing solar on-grid system install
    ```
 
 5. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+
+   - Frontend: <http://localhost:3000>
+   - Backend API: <http://localhost:5000>
 
 ## 🌐 API Endpoints
 
@@ -99,16 +108,19 @@ A comprehensive MERN stack application for managing solar on-grid system install
 ## 📱 Key Features
 
 ### Search & Filter
+
 - Real-time search by customer name and location
 - Filter by system capacity and location
 - Combined search and filter functionality
 
 ### Service Date Management
+
 - Automatic calculation of next service date
 - 6-month intervals from last service or installation
 - Clear display of service status
 
 ### Data Validation
+
 - Required field validation
 - Date validation
 - Capacity input validation
@@ -116,7 +128,7 @@ A comprehensive MERN stack application for managing solar on-grid system install
 
 ## 🏗️ Project Structure
 
-```
+```text
 solar-service-tracker/
 ├── client/                 # React frontend
 │   ├── public/
@@ -146,11 +158,13 @@ solar-service-tracker/
 ## 📦 Deployment
 
 ### Production Build
+
 ```bash
 npm run build
 ```
 
 ### Environment Variables (Production)
+
 ```env
 PORT=5000
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/solar-tracker
