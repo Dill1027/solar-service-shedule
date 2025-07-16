@@ -9,7 +9,7 @@ const Navbar = () => {
     <BootstrapNavbar bg="dark" variant="dark" expand="lg" sticky="top" className="shadow-sm">
       <Container>
         <BootstrapNavbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <i className="bi bi-sun me-2"></i>
+          <i className="bi bi-sun me-2" aria-hidden="true"></i>
           <span className="d-none d-sm-inline">Solar Service Tracker</span>
           <span className="d-inline d-sm-none">Solar Tracker</span>
         </BootstrapNavbar.Brand>
@@ -26,7 +26,7 @@ const Navbar = () => {
               active={location.pathname === '/dashboard' || location.pathname === '/'}
               className="mobile-responsive-text"
             >
-              <i className="bi bi-speedometer2 me-1"></i>
+              <i className="bi bi-speedometer2 me-1" aria-hidden="true"></i> 
               Dashboard
             </Nav.Link>
             <Nav.Link 
@@ -35,14 +35,14 @@ const Navbar = () => {
               active={location.pathname === '/installations'}
               className="mobile-responsive-text"
             >
-              <i className="bi bi-list-ul me-1"></i>
+              <i className="bi bi-list-ul me-1" aria-hidden="true"></i> 
               Installations
             </Nav.Link>
           </Nav>
           
           <Nav>
             <Nav.Link href="#" className="text-light mobile-responsive-text">
-              <i className="bi bi-person-circle me-1"></i>
+              <i className="bi bi-person-circle me-1" aria-hidden="true"></i>
               <span className="d-none d-sm-inline">Admin</span>
               <span className="d-inline d-sm-none">User</span>
             </Nav.Link>
