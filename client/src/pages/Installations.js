@@ -275,7 +275,7 @@ const Installations = () => {
                 onClick={() => handleShowModal(installation)}
                 className="flex-fill touch-target"
               >
-                <i className="bi bi-pencil me-1"></i>
+                <i className="bi bi-pencil me-1" aria-hidden="true"></i> 
                 Edit
               </Button>
               <Button 
@@ -284,7 +284,7 @@ const Installations = () => {
                 onClick={() => handleDelete(installation)}
                 className="touch-target"
               >
-                <i className="bi bi-trash me-1"></i>
+                <i className="bi bi-trash me-1" aria-hidden="true"></i> 
                 Delete
               </Button>
             </div>
@@ -299,7 +299,7 @@ const Installations = () => {
       <div className="mobile-stack mb-4">
         <div className="mobile-text-center">
           <h1 className="mb-0">
-            <i className="bi bi-list-ul me-2"></i>
+            <i className="bi bi-list-ul me-2" aria-hidden="true"></i> 
             Installations
           </h1>
         </div>
@@ -308,7 +308,7 @@ const Installations = () => {
           onClick={() => handleShowModal()}
           className="mobile-full-width touch-target"
         >
-          <i className="bi bi-plus-circle me-2"></i>
+          <i className="bi bi-plus-circle me-2" aria-hidden="true"></i> 
           Add Installation
         </Button>
       </div>
@@ -364,10 +364,10 @@ const Installations = () => {
       {/* Loading State */}
       {loading && (
         <div className="text-center py-5">
-          <Spinner animation="border" role="status" variant="primary">
+          <Spinner animation="border" variant="primary" aria-label="Loading">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
-          <div className="mt-3">Loading installations...</div>
+          <output className="mt-3">Loading installations...</output>
         </div>
       )}
 
@@ -385,7 +385,7 @@ const Installations = () => {
       {/* Empty State */}
       {!loading && !error && installations.length === 0 && (
         <div className="empty-state mobile-card-spacing">
-          <i className="bi bi-inbox"></i>
+          <i className="bi bi-inbox me-2" aria-hidden="true"></i>
           <h3>No installations found</h3>
           <p className="mobile-responsive-text">
             {filters.search || filters.capacity !== 'all' || filters.district !== 'all'
@@ -398,7 +398,7 @@ const Installations = () => {
             onClick={() => handleShowModal()}
             className="touch-target"
           >
-            <i className="bi bi-plus-circle me-2"></i>
+            <i className="bi bi-plus-circle me-2" aria-hidden="true"></i> 
             Add Installation
           </Button>
         </div>
