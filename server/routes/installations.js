@@ -108,15 +108,21 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const installation = new Installation({
+    const installationData = {
       customerName,
       systemCapacity,
       inverterModel,
       location,
       installationDate: new Date(installationDate),
-      lastServiceDate: lastServiceDate ? new Date(lastServiceDate) : undefined,
       note
-    });
+    };
+
+    // Handle lastServiceDate - allow null/empty to mean no service yet
+    if (lastServiceDate && lastServiceDate.trim() !== '') {
+      installationData.lastServiceDate = new Date(lastServiceDate);
+    }
+
+    const installation = new Installation(installationData);
 
     const savedInstallation = await installation.save();
 
@@ -147,6 +153,9 @@ router.post('/', async (req, res) => {
 // PUT /api/installations/:id - Update installation
 router.put('/:id', async (req, res) => {
   try {
+    console.log('Update request for ID:', req.params.id);
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    
     const {
       customerName,
       systemCapacity,
@@ -163,11 +172,17 @@ router.put('/:id', async (req, res) => {
       inverterModel,
       location,
       installationDate: installationDate ? new Date(installationDate) : undefined,
-      lastServiceDate: lastServiceDate ? new Date(lastServiceDate) : undefined,
       note
     };
 
-    // Remove undefined fields
+    // Handle lastServiceDate separately to allow clearing it
+    if (lastServiceDate === '' || lastServiceDate === null) {
+      updateData.lastServiceDate = null;
+    } else if (lastServiceDate) {
+      updateData.lastServiceDate = new Date(lastServiceDate);
+    }
+
+    // Remove undefined fields (but keep null values)
     Object.keys(updateData).forEach(key => {
       if (updateData[key] === undefined) {
         delete updateData[key];
@@ -196,10 +211,15 @@ router.put('/:id', async (req, res) => {
     console.error('Error updating installation:', error);
     
     if (error.name === 'ValidationError') {
+      console.log('Validation Error Details:', error.errors);
       return res.status(400).json({
         success: false,
         message: 'Validation error',
-        errors: Object.values(error.errors).map(err => err.message)
+        errors: Object.values(error.errors).map(err => ({
+          field: err.path,
+          message: err.message,
+          value: err.value
+        }))
       });
     }
 

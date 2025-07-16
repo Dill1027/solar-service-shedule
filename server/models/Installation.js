@@ -54,16 +54,8 @@ const installationSchema = new mongoose.Schema({
     }
   },
   lastServiceDate: {
-    type: Date,
-    validate: {
-      validator: function(value) {
-        if (value) {
-          return value >= this.installationDate && value <= new Date();
-        }
-        return true;
-      },
-      message: 'Last service date must be after installation date and not in the future'
-    }
+    type: Date
+    // Validation is handled in pre-save middleware
   },
   note: {
     type: String,
@@ -108,11 +100,35 @@ installationSchema.index({ 'location.district': 1 });
 installationSchema.index({ installationDate: -1 });
 
 // Pre-save middleware to validate dates
-installationSchema.pre('save', function(next) {
-  if (this.lastServiceDate && this.lastServiceDate < this.installationDate) {
-    next(new Error('Last service date cannot be before installation date'));
-  } else {
+installationSchema.pre('save', async function(next) {
+  try {
+    // If this is an update operation, we need to get the current document
+    if (!this.isNew && this.isModified('lastServiceDate')) {
+      const currentDoc = await this.constructor.findById(this._id);
+      const installationDate = this.installationDate || currentDoc.installationDate;
+      
+      if (this.lastServiceDate && installationDate) {
+        if (this.lastServiceDate < installationDate) {
+          return next(new Error('Last service date cannot be before installation date'));
+        }
+        if (this.lastServiceDate > new Date()) {
+          return next(new Error('Last service date cannot be in the future'));
+        }
+      }
+    } else if (this.isNew || this.isModified('lastServiceDate')) {
+      // For new documents or when both dates are being modified
+      if (this.lastServiceDate && this.installationDate) {
+        if (this.lastServiceDate < this.installationDate) {
+          return next(new Error('Last service date cannot be before installation date'));
+        }
+        if (this.lastServiceDate > new Date()) {
+          return next(new Error('Last service date cannot be in the future'));
+        }
+      }
+    }
     next();
+  } catch (error) {
+    next(error);
   }
 });
 
