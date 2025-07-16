@@ -30,10 +30,10 @@ const Dashboard = () => {
   if (loading) {
     return (
       <Container className="text-center py-5">
-        <Spinner animation="border" role="status" variant="primary">
+        <Spinner animation="border" variant="primary" aria-label="Loading">
           <span className="visually-hidden">Loading...</span>
         </Spinner>
-        <div className="mt-3">Loading dashboard...</div>
+        <output className="mt-3">Loading dashboard...</output>
       </Container>
     );
   }
@@ -60,7 +60,7 @@ const Dashboard = () => {
       <div className="mobile-stack mb-4">
         <div className="mobile-text-center">
           <h1 className="mb-0">
-            <i className="bi bi-speedometer2 me-2"></i>
+            <i className="bi bi-speedometer2 me-2" aria-hidden="true"></i>
             Dashboard
           </h1>
         </div>
@@ -74,7 +74,7 @@ const Dashboard = () => {
           <Card className="h-100 border-0 shadow-sm mobile-card-spacing">
             <Card.Body className="text-center">
               <div className="display-4 text-primary mb-2">
-                <i className="bi bi-lightning-charge"></i>
+                <i className="bi bi-lightning-charge me-2" aria-hidden="true"></i>
               </div>
               <h3 className="stats-number text-primary">
                 {stats?.totalInstallations || 0}
@@ -90,7 +90,7 @@ const Dashboard = () => {
           <Card className="h-100 border-0 shadow-sm mobile-card-spacing">
             <Card.Body className="text-center">
               <div className="display-4 text-success mb-2">
-                <i className="bi bi-battery-charging"></i>
+                <i className="bi bi-battery-charging me-2" aria-hidden="true"></i>
               </div>
               <h3 className="stats-number text-success">
                 {stats?.totalCapacity ? `${stats.totalCapacity.toFixed(1)}kW` : '0kW'}
@@ -106,7 +106,7 @@ const Dashboard = () => {
           <Card className="h-100 border-0 shadow-sm mobile-card-spacing">
             <Card.Body className="text-center">
               <div className="display-4 text-info mb-2">
-                <i className="bi bi-tools"></i>
+                <i className="bi bi-tools me-2" aria-hidden="true"></i>
               </div>
               <h3 className="stats-number text-info">
                 {stats?.servicedInstallations || 0}
@@ -122,7 +122,7 @@ const Dashboard = () => {
           <Card className="h-100 border-0 shadow-sm mobile-card-spacing">
             <Card.Body className="text-center">
               <div className="display-4 text-warning mb-2">
-                <i className="bi bi-calendar-check"></i>
+                <i className="bi bi-calendar-check me-2" aria-hidden="true"></i>
               </div>
               <h3 className="stats-number text-warning">
                 {stats?.upcomingServices || 0}
@@ -140,7 +140,7 @@ const Dashboard = () => {
           <Card className="border-0 shadow-sm mobile-card-spacing">
             <Card.Header className="bg-light">
               <h5 className="mb-0">
-                <i className="bi bi-graph-up me-2"></i>
+                <i className="bi bi-graph-up me-2" aria-hidden="true"></i>
                 System Overview
               </h5>
             </Card.Header>
@@ -186,7 +186,7 @@ const Dashboard = () => {
           <Card className="border-0 shadow-sm mobile-card-spacing">
             <Card.Header className="bg-light">
               <h5 className="mb-0">
-                <i className="bi bi-info-circle me-2"></i>
+                <i className="bi bi-info-circle me-2" aria-hidden="true"></i>
                 Quick Actions
               </h5>
             </Card.Header>
@@ -196,21 +196,21 @@ const Dashboard = () => {
                   className="btn btn-primary touch-target"
                   onClick={() => window.location.href = '/installations'}
                 >
-                  <i className="bi bi-plus-circle me-2"></i>
+                  <i className="bi bi-plus-circle me-2" aria-hidden="true"></i>
                   Add New Installation
                 </button>
                 <button 
                   className="btn btn-outline-info touch-target"
                   onClick={() => window.location.href = '/installations'}
                 >
-                  <i className="bi bi-search me-2"></i>
+                  <i className="bi bi-search me-2" aria-hidden="true"></i>
                   View All Installations
                 </button>
                 <button 
                   className="btn btn-outline-warning touch-target"
                   onClick={fetchStats}
                 >
-                  <i className="bi bi-arrow-clockwise me-2"></i>
+                  <i className="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>
                   Refresh Dashboard
                 </button>
               </div>
@@ -225,7 +225,7 @@ const Dashboard = () => {
           <Card className="border-0 bg-light mobile-card-spacing">
             <Card.Body className="text-center py-4 py-md-5">
               <h2 className="text-primary mb-3">
-                <i className="bi bi-sun me-2"></i>
+                <i className="bi bi-sun me-2" aria-hidden="true"></i>
                 Welcome to Solar Service Tracker
               </h2>
               <p className="lead text-muted mb-4 mobile-responsive-text">
@@ -234,7 +234,7 @@ const Dashboard = () => {
               <Row className="g-4">
                 <Col md={4} className="mb-3 mb-md-0">
                   <div className="feature-box">
-                    <i className="bi bi-shield-check display-4 text-success mb-3"></i>
+                    <i className="bi bi-shield-check display-4 text-success mb-3" aria-hidden="true"></i>
                     <h5>Track Installations</h5>
                     <p className="text-muted mobile-responsive-text">
                       Keep detailed records of all solar installations with customer information and system specifications.
@@ -243,7 +243,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={4} className="mb-3 mb-md-0">
                   <div className="feature-box">
-                    <i className="bi bi-calendar2-week display-4 text-info mb-3"></i>
+                    <i className="bi bi-calendar2-week display-4 text-info mb-3" aria-hidden="true"></i>
                     <h5>Service Scheduling</h5>
                     <p className="text-muted mobile-responsive-text">
                       Automatically calculate and track service dates to ensure optimal system performance.
@@ -252,7 +252,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={4}>
                   <div className="feature-box">
-                    <i className="bi bi-graph-up-arrow display-4 text-warning mb-3"></i>
+                    <i className="bi bi-graph-up-arrow display-4 text-warning mb-3" aria-hidden="true"></i>
                     <h5>Performance Insights</h5>
                     <p className="text-muted mobile-responsive-text">
                       Get insights into your installation portfolio and service completion rates.
