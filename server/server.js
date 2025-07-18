@@ -7,7 +7,10 @@ require('dotenv').config();
 
 const installationRoutes = require('./routes/installations');
 
+
 const app = express();
+// Trust proxy for Vercel/production deployments
+app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
