@@ -12,21 +12,11 @@ const app = express();
 // Trust proxy for Vercel/production deployments
 app.set('trust proxy', 1);
 
-// Security middleware
-app.use(helmet());
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
-});
-app.use(limiter);
-
-// CORS configuration
-const defaultOrigins = process.env.NODE_ENV === 'production'
-  ? ['https://solar-service-shedule.vercel.app']
-  : ['http://localhost:3000'];
+// CORS must run before middleware that can return an error response.
+const defaultOrigins = ['https://solar-service-shedule.vercel.app'];
+if (process.env.NODE_ENV !== 'production') {
+  defaultOrigins.push('http://localhost:3000');
+}
 const allowedOrigins = new Set([
   ...defaultOrigins,
   ...(process.env.CORS_ORIGIN || '')
@@ -42,33 +32,83 @@ app.use(cors({
   credentials: true
 }));
 
+// Security middleware
+app.use(helmet());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
+});
+app.use(limiter);
+
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/solar-tracker', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('Connected to MongoDB');
-})
-.catch((error) => {
-  console.error('MongoDB connection error:', error);
-  process.exit(1);
-});
+let databaseConnection;
+
+const connectToDatabase = async () => {
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  if (mongoose.connection.readyState === 0) {
+    databaseConnection = undefined;
+  }
+
+  if (!databaseConnection) {
+    databaseConnection = mongoose.connect(
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/solar-tracker',
+      { serverSelectionTimeoutMS: 5000 }
+    ).then(() => {
+      console.log('Connected to MongoDB');
+    }).catch((error) => {
+      databaseConnection = undefined;
+      throw error;
+    });
+  }
+
+  await databaseConnection;
+};
+
+const requireDatabase = async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    res.status(503).json({
+      success: false,
+      message: 'Database is currently unavailable',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Service unavailable'
+    });
+  }
+};
 
 // Routes
-app.use('/api/installations', installationRoutes);
+app.use('/api/installations', requireDatabase, installationRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'Solar Tracker API is running',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    await connectToDatabase();
+    res.status(200).json({
+      status: 'OK',
+      database: 'connected',
+      message: 'Solar Tracker API is running',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('MongoDB connection error during health check:', error);
+    res.status(503).json({
+      status: 'ERROR',
+      database: 'unavailable',
+      message: 'Solar Tracker API is running but the database is unavailable',
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Error handling middleware
@@ -90,7 +130,7 @@ app.use('*', (req, res) => {
 const PORT = process.env.PORT || 5001;
 
 // Only start the server if not in Vercel environment
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
