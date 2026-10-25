@@ -16,9 +16,13 @@ Create these environment variables in your Vercel dashboard:
 ```
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/solar-tracker
-CORS_ORIGIN=https://your-app.vercel.app
+CORS_ORIGIN=https://solar-service-shedule.vercel.app
 REACT_APP_API_URL=https://your-app.vercel.app/api
 ```
+
+For separate frontend and API deployments, set `CORS_ORIGIN` to the frontend's
+exact origin (for example, `https://solar-service-shedule.vercel.app`). Multiple
+allowed origins can be provided as a comma-separated list.
 
 #### 2. **Deploy Using Vercel CLI**
 

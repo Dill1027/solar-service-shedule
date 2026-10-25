@@ -24,8 +24,21 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // CORS configuration
+const defaultOrigins = process.env.NODE_ENV === 'production'
+  ? ['https://solar-service-shedule.vercel.app']
+  : ['http://localhost:3000'];
+const allowedOrigins = new Set([
+  ...defaultOrigins,
+  ...(process.env.CORS_ORIGIN || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+]);
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    callback(null, !origin || allowedOrigins.has(origin));
+  },
   credentials: true
 }));
 

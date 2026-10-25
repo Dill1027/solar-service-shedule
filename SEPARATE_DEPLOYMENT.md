@@ -22,7 +22,7 @@ Add these in Vercel dashboard for the server project:
 ```
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://prabhathdilshan2001:BqtL0zkQKOIVYgrU@solarservice.n0jim72.mongodb.net/solar-tracker?retryWrites=true&w=majority&appName=solarservice
-CORS_ORIGIN=https://your-client-domain.vercel.app
+CORS_ORIGIN=https://solar-service-shedule.vercel.app
 ```
 
 #### 1.3 Server URL:
@@ -55,7 +55,7 @@ https://your-server-name.vercel.app
 Add this in Vercel dashboard for the client project:
 
 ```
-REACT_APP_API_URL=https://your-server-name.vercel.app/api
+REACT_APP_API_URL=https://solar-service-api.vercel.app/api
 GENERATE_SOURCEMAP=false
 ```
 
@@ -87,7 +87,8 @@ https://your-client-name.vercel.app
 
 2. **Update Server CORS**:
    - Go back to server project settings
-   - Update `CORS_ORIGIN` to your client URL
+   - Set `CORS_ORIGIN` to `https://solar-service-shedule.vercel.app`
+   - For multiple frontend domains, separate origins with commas
 
 ---
 
@@ -97,12 +98,12 @@ https://your-client-name.vercel.app
 ```
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://prabhathdilshan2001:BqtL0zkQKOIVYgrU@solarservice.n0jim72.mongodb.net/solar-tracker?retryWrites=true&w=majority&appName=solarservice
-CORS_ORIGIN=https://your-client-domain.vercel.app
+CORS_ORIGIN=https://solar-service-shedule.vercel.app
 ```
 
 ### **Client Project Variables:**
 ```
-REACT_APP_API_URL=https://your-server-domain.vercel.app/api
+REACT_APP_API_URL=https://solar-service-api.vercel.app/api
 GENERATE_SOURCEMAP=false
 ```
 
